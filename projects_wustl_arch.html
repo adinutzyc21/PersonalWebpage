@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-   <title>Adina Raluca Stoica - Other Projects</title> 
+   <title>Adina Raluca Stoica - Computer Architecture</title> 
    <link rel="stylesheet" href="style.css" type="text/css" media="all" /> 
    <link rel="stylesheet" href="menu_style.css" type="text/css" media="all" />
    <link href="*" rel="stylesheet" type="text/css" />
@@ -16,7 +16,7 @@
     ga('send', 'pageview');
        //-->
   </script>
-  
+
 </head> 
 
 <body> 
@@ -59,13 +59,28 @@
 </ul>
 
 <div class="info"> 	
-	  <h2><a href="projects.html">Projects</a> > Graduate Courses</h2>
-      Choose a course:
-	  <ul class="tab_left">
-		<li><a href="projects_wustl_ai.html">Artificial Intelligence</a></li>
-		<li><a href="projects_wustl_arch.html">Computer Architecture</a></li>
-	  </ul>
+    <!-- ARCHITECTURE-->
+      <h2><a href="projects.html">Projects</a> > <a href="projects_wustl.html">Graduate Courses</a> > Computer Architecture </h2>
+      <i>Washington University in St. Louis, Fall 2012</i><br /><br />
 	  
+      For the final project, <a href="extras/proj/arch/FinalProject.pdf" target="_blank"> Speculative Scheduling In Out-Of-Order Processors</a>, I was part of a team that explored scheduling heuristics for selecting which instructions from the issue queue to execute next in an out-of-order processor. <br/><br />
+	  
+	  When discussing Dynamic Scheduling and the Issue Queue in class, we decided that the easiest way to schedule the next instruction to be executed is by age, the oldest ready instruction in the queue going first. For this project, we explored other possible scheduling heuristics and evaluated whether and how they improved the overall performance of the processor by increasing the number of instructions that could be dispatched in each cycle on an n-wide processor. The goal of this project was to find a heuristic that improves processor performance. <br/><br />
+	  
+	  <center>
+	  <a href="extras/proj/arch/architecture.jpg"><img alt="Picture" src="extras/proj/arch/architecture.jpg" width="500px"></a>
+	  </center>
+	  <br/><br/>
+
+      We had two baseline heuristics, AGE and LATENCY, and implemented several more heuristics. The best heuristics in our experiments were LOADS_MISSED (which adds a special score for the loads that we assume will miss in the cache) and LOADS_FIRST_MISSED (special score for loads plus special score for predicted misses), obtaining a 6.1% speedup. However, the LATENCY baseline had a 5.3% speedup in our experiments, and further experiments would need to be run to determine if the improvement is worth it.
+      <br /><br />
+      
+	  
+	<a href="https://github.com/adinutzyc21/ComputerArchitecture" target="_blank"><img alt="Picture" src="images/github.jpg" height="80" class="image_left" /></a> 
+		<p class="tab_left">Special thanks to Hila and Zheng for working on the project with me! </p>
+		<p class="tab_left">You can read our project write-up <a href="extras/proj/arch/FinalProject.pdf" target="_blank"> here</a>.</p>
+		<p class="tab_left">You can also download the code from my <a href="https://github.com/adinutzyc21/ComputerArchitecture" target="_blank">GitHub</a>.</p>
+      <br/>
 </div><!--info-->
 <div class="clear" style="margin:2em"> </div> 
 
