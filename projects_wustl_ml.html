@@ -16,7 +16,7 @@
     ga('send', 'pageview');
        //-->
   </script>
-  
+
 </head> 
 
 <body> 
@@ -59,16 +59,25 @@
 </ul>
 
 <div class="info"> 	
-	  <h2><a href="projects.html">Projects</a> > Wash U Courses</h2>
-      Choose a course:
-	  <ul class="tab_left">
-		<li><a href="projects_wustl_ai.html">Artificial Intelligence</a></li>
-		<li><a href="projects_wustl_arch.html">Computer Architecture</a></li>
-		<li><a href="projects_wustl_ml.html">Machine Learning</a></li>
-		<li><a href="projects_wustl_vision.html">Computer Vision</a></li>
-        <li><a href="projects_wustl_gc.html">Geometric Computing for Biomedicine</a></li>
-	  </ul>
-	  
+      <h2><a href="projects.html">Projects</a> > <a href="projects_wustl.html">Wash U Courses</a> > Advanced Machine Learning </h2>
+      <i>Washington University in St. Louis, Fall 2012</i><br /><br />
+      
+	  This course had 3 labs that involved implementing machine learning papers in Matlab, but unfortunately I do not have that code anymore.<br /><br/>
+
+      The final project for the class, <a href="extras/proj/machine_learning/Aneurysm.pdf" target="_blank">Middle Cerebral Artery Aneurysm Classification</a>, was a team project to automate the pre-operatory aneurysm classification process. We used shape analysis techniques paired with machine learning over a small set of manually categorized aneurysm meshes, as shown in the figure below. The machine learning concept we used was random forests, which were particularly suited for our set of data. We wrote the code in C++ for MATLAB via mex files, as well as compared to a native Matlab implementation.<br /><br />
+
+	  <center>
+	  <a href="extras/proj/machine_learning/aneurysms.jpeg" target="_blank"> <img alt="Picture" src="extras/proj/machine_learning/aneurysms.jpeg" width="600"></a>
+	  </center>
+	  <br />
+
+	For the preliminary results, we obtained an overall classification accuracy of 0.7, while doing better on anneurisms for which we had better data and features. One of our team members continued the project and obtained better results with more data and a better training dataset.<br /><br />
+	
+	<a href="https://github.com/adinutzyc21/ComputerArchitecture" target="_blank"><img alt="Picture" src="images/github.jpg" height="80" class="image_left" /></a> 
+		<p class="tab_left">Special thanks to Sam and Derek for working with me on this! </p>
+		<p class="tab_left">You can read our project write-up <a href="extras/proj/machine_learning/Aneurysm.pdf" target="_blank"> here</a>.</p>
+		<p class="tab_left">You can also download the code from my <a href="https://github.com/adinutzyc21/MachineLearning" target="_blank">GitHub</a>.</p>
+      <br/>    
 </div><!--info-->
 <div class="clear"> </div> 
 
