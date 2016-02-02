@@ -49,10 +49,12 @@
 				var captions=[];				// captions array
 				var links=[];					// links array
 				var itemSources=[];				// sources array
+				var imWidth=[], imHeight=[];	//the width and height of the images
 				var vidThumb=[];				// video thumbnails (supplied by the longdesc attribute in the iframe)
 				var widthSource,heightSource;		// width and height of each item
 				var nextLeft,nextRight;			// pointers to the next array index for moving left and right
 				var clrTimerInterval;			// interval handle variable for timer and autoPilot
+								
 				var u,elapsedTime=0;
 				var canvasSupported = "HTMLCanvasElement" in window;
 				$('li',obj).each(function(index){ // populate arrays
@@ -77,7 +79,7 @@
 
 				// Build tray to hold items and populate with item container divs. Move tray one item width to the left.
 				$(obj).append('<div class="ic_tray" style="position:relative;width:'+(numItems*2)*widthSource+'px;left:-'+widthSource+'px">');
-				for(var i=0;i<numItems;i++) $('div.ic_tray',obj).append('<div style="overflow:hidden;background:url('+o.imagePath+'wait.gif) no-repeat scroll 50% 50% #ddd;float:left;position:relative;width:'+widthSource+'px;height:'+heightSource+'px;" class="infiniteCarousel_item">');
+				for(var i=0;i<numItems;i++) $('div.ic_tray',obj).append('<div style="overflow:hidden;background:url('+o.imagePath+'wait.gif) no-repeat scroll 50% 50%;float:left;position:relative;width:'+widthSource+'px;height:'+heightSource+'px;" class="infiniteCarousel_item">');
 
 				// Populate the individual tray divs with items. Add links and captions where available.
 				$('.infiniteCarousel_item',obj).each(function(index){
@@ -89,6 +91,11 @@
 					}
 					else
 					{
+						////compensate for padding!!!!
+						//var image = $(this);
+						//if (image.width() < 75) {
+						//	image.css('padding-left', ((75 - image.width()) / 2)); 
+						//}
 						$(this).append('<img src="'+itemSources[index]+'" />');
 						if(links[index]!=undefined) $('img',this).wrap('<a class="ic_link" href="'+links[index]+'"></a>'); // IE8 needs the </a>. see http://outwardfocusdesign.com/blog/web-design-professionals/jquery/possible-fix-for-jquerys-wrap-function-for-ie8/
 					}
