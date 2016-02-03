@@ -7,7 +7,7 @@
  * @copyright (c) admin@catchmyfame.com (www.catchmyfame.com)
  * @license CC Attribution-Share Alike 3.0 - http://creativecommons.org/licenses/by-sa/3.0/
  */
-(function($){
+$(function($){
 	$.fn.extend({ 
 		infiniteCarousel: function(options)
 		{
@@ -68,8 +68,8 @@
 					itemSources.push( $(this).find('img, iframe').attr('src') ); // finds images and youtube and vimeo iframe sources
 					
 					var img = $(this).find('img'); 
-					imW.push(img.width());
-					imH.push(img.height());
+					imW.push(img[0].clientWidth);
+					imH.push(img[0].clientHeight);
 				});
 
 				// Check for improper values in inview and advance
