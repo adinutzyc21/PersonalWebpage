@@ -13,6 +13,8 @@
 		{
 			var defaults = 
 			{
+				wi: 640,
+				he: 480,
 				transitionSpeed: 800,
 				displayTime: 6000,
 				displayProgressRing: true,
@@ -49,11 +51,13 @@
 				var captions=[];				// captions array
 				var links=[];					// links array
 				var itemSources=[];				// sources array
-				var imWidth=[], imHeight=[];	//the width and height of the images
 				var vidThumb=[];				// video thumbnails (supplied by the longdesc attribute in the iframe)
-				var widthSource,heightSource;		// width and height of each item
+				//var widthSource,heightSource;		// width and height of each item
 				var nextLeft,nextRight;			// pointers to the next array index for moving left and right
 				var clrTimerInterval;			// interval handle variable for timer and autoPilot
+				
+				var imW=[];
+				var imH=[];
 								
 				var u,elapsedTime=0;
 				var canvasSupported = "HTMLCanvasElement" in window;
@@ -62,6 +66,10 @@
 					links.push( $('a',this).attr('href') );
 					vidThumb.push( $(this).find('iframe').attr('longdesc') );
 					itemSources.push( $(this).find('img, iframe').attr('src') ); // finds images and youtube and vimeo iframe sources
+					
+					var img = $(this).find('img'); 
+					imW.push(img.width());
+					imH.push(img.height());
 				});
 
 				// Check for improper values in inview and advance
@@ -69,34 +77,44 @@
 				if(o.advance > o.inView) o.advance = o.inView; // Prevent advancing more than inView images at a time
 
 				// Dimensions should be set explicitly on the items so that we don't have to defer loading code until the images are loaded
-				widthSource = $(this).find('img, iframe').width();
-				heightSource = $(this).find('img, iframe').height();
+				//widthSource = $(this).find('img, iframe').width();
+				//heightSource = $(this).find('img, iframe').height();
 
 				// Build carousel container
 				$(obj).replaceWith('<div class="infiniteCarousel" id="ic_'+randID+'">'); // Kick the list and its content to the curb and replace with a div
 				obj=$('#ic_'+randID); // Reassign the new div as our obj
-				$(obj).height(heightSource).width(widthSource*o.inView).css({'overflow':'hidden','position':'relative'});
+				$(obj).height(o.he).width(o.wi*o.inView).css({'overflow':'hidden','position':'relative'});
 
 				// Build tray to hold items and populate with item container divs. Move tray one item width to the left.
-				$(obj).append('<div class="ic_tray" style="position:relative;width:'+(numItems*2)*widthSource+'px;left:-'+widthSource+'px">');
-				for(var i=0;i<numItems;i++) $('div.ic_tray',obj).append('<div style="overflow:hidden;background:url('+o.imagePath+'wait.gif) no-repeat scroll 50% 50%;float:left;position:relative;width:'+widthSource+'px;height:'+heightSource+'px;" class="infiniteCarousel_item">');
+				$(obj).append('<div class="ic_tray" style="position:relative;width:'+(numItems*2)*o.wi+'px;left:-'+o.wi+'px">');
+				for(var i=0;i<numItems;i++) $('div.ic_tray',obj).append('<div style="overflow:hidden;background:url('+o.imagePath+'wait.gif) no-repeat scroll 50% 50%;float:left;position:relative;width:'+o.wi+'px;height:'+o.he+'px;" class="infiniteCarousel_item">');
 
 				// Populate the individual tray divs with items. Add links and captions where available.
 				$('.infiniteCarousel_item',obj).each(function(index){
 					if(itemSources[index].indexOf('youtube.com') > 0 || itemSources[index].indexOf('vimeo.com') > 0 || itemSources[index].indexOf('funnyordie.com') > 0)
 					{
 						var querystring = itemSources[index].split("?"); // Need to disassemble and reassemble any querystring parameters so that we can append wmode=opaque as first parameter (see http://stackoverflow.com/questions/3820325/overlay-opaque-div-over-youtube-iframe)
-						$(this).append('<iframe src="'+querystring[0]+"?wmode=opaque&"+querystring[1]+'" frameborder="0" allowfullscreen="" style="width: '+widthSource+'px; height: '+heightSource+'px">" />');
+						$(this).append('<iframe src="'+querystring[0]+"?wmode=opaque&"+querystring[1]+'" frameborder="0" allowfullscreen="" style="width: '+o.wi+'px; height: '+o.he+'px">" />');
 						if(links[index]!=undefined) $('iframe',this).wrap('<a class="ic_link" href="'+links[index]+'"></a>'); // IE8 needs the </a>. see http://outwardfocusdesign.com/blog/web-design-professionals/jquery/possible-fix-for-jquerys-wrap-function-for-ie8/
 					}
 					else
 					{
-						////compensate for padding!!!!
-						//var image = $(this);
-						//if (image.width() < 75) {
-						//	image.css('padding-left', ((75 - image.width()) / 2)); 
-						//}
-						$(this).append('<img src="'+itemSources[index]+'" />');
+						//resize the image down to within [o.wi x o.he] and center it both horizontally and vertically
+						var w=imW[index],h=imH[index],mL=0,mT=0;
+						if(w>o.wi){
+							w=o.wi; h=1.0*o.wi*imH[index]/imW[index];
+						}
+						if(h>o.he){
+							h=o.he; w=1.0*o.he*imW[index]/imH[index];
+						}
+						if(w<o.wi){
+							mL=(o.wi-w)/2;
+						}
+						if(h<o.he){
+							mT=(o.he-h)/2;
+						}
+						
+						$(this).append('<img src="'+itemSources[index]+'" width="'+w+'px" height="'+h+'px" style="margin-left: '+mL+'px; margin-top: '+mT+'px;"/>');
 						if(links[index]!=undefined) $('img',this).wrap('<a class="ic_link" href="'+links[index]+'"></a>'); // IE8 needs the </a>. see http://outwardfocusdesign.com/blog/web-design-professionals/jquery/possible-fix-for-jquerys-wrap-function-for-ie8/
 					}
 					if(captions[index]!=undefined) $(this).append('<div class="ic_caption" style="position:absolute;bottom:0;">'+captions[index]+'</div>');
@@ -116,7 +134,7 @@
 				}
 
 				// Build left/right nav
-				$(obj).append('<div class="ic_left_nav" style="position:absolute;left:0;width:32px;top:'+(heightSource/2-16)+'px;">').append('<div class="ic_right_nav" style="position:absolute;width:32px;right:0;top:'+(heightSource/2-16)+'px;">');
+				$(obj).append('<div class="ic_left_nav" style="position:absolute;left:0;width:32px;top:'+(o.he/2-16)+'px;">').append('<div class="ic_right_nav" style="position:absolute;width:32px;right:0;top:'+(o.he/2-16)+'px;">');
 				$('.ic_left_nav',obj).append('<img style="cursor:pointer;" src="'+o.imagePath+'left.png" />');
 				$('.ic_right_nav',obj).append('<img style="cursor:pointer;" src="'+o.imagePath+'right.png" />');
 				if( !o.prevNextInternal && ( parseInt( $(obj).css('border-left-width') ) + parseInt( $(obj).css('border-right-width') ) ) > 0) $('.ic_right_nav',obj).css('right','-'+(parseInt( $(obj).css('border-left-width') ) + parseInt( $(obj).css('border-right-width') ) )+'px'); // adjust right nav of margin, external nav, and a border exist
@@ -279,7 +297,7 @@
 				} else { $(obj).append('<div id="ic_ie_timer_'+randID+'" style="width:100%;height:6px;position:absolute;bottom:0;left:0;background:#ccc"></div>');$('#ic_ie_timer_'+randID).css('opacity','.25') }
 				function hideCaptions()
 				{
-					if(o.autoHideCaptions) $('.ic_caption',obj).stop().animate({bottom:-heightSource+'px'});
+					if(o.autoHideCaptions) $('.ic_caption',obj).stop().animate({bottom:-o.he+'px'});
 				}
 				function showCaptions()
 				{
@@ -304,8 +322,8 @@
 					o.onSlideStart.call(this);
 					$('.ic_button',thumbTopParent).removeClass('ic_active');
 					$('.infiniteCarousel_item',obj).slice(-dist).prependTo('#ic_'+randID+' .ic_tray',obj);
-					$('.ic_tray',obj).css({left:'-='+(widthSource*dist)+'px'});
-					$('.ic_tray',obj).stop().animate({left:"+="+widthSource*dist+"px"},o.transitionSpeed,o.easeRight,function(){
+					$('.ic_tray',obj).css({left:'-='+(o.wi*dist)+'px'});
+					$('.ic_tray',obj).stop().animate({left:"+="+o.wi*dist+"px"},o.transitionSpeed,o.easeRight,function(){
 						showCaptions();
 						manageThumbButtons();
 						o.onSlideEnd.call(this);
@@ -316,9 +334,9 @@
 				{
 					o.onSlideStart.call(this);
 					$('.ic_button',thumbTopParent).removeClass('ic_active');
-					$('.ic_tray',obj).stop().animate({left:"-="+(widthSource+o.margin)*dist+"px"},o.transitionSpeed,o.easeLeft,function(){
+					$('.ic_tray',obj).stop().animate({left:"-="+(o.wi+o.margin)*dist+"px"},o.transitionSpeed,o.easeLeft,function(){
 						$('.infiniteCarousel_item',obj).slice(0,dist).appendTo('#ic_'+randID+' .ic_tray',obj);
-						$('.ic_tray',obj).css({left:'-'+(widthSource+o.margin)+'px'});
+						$('.ic_tray',obj).css({left:'-'+(o.wi+o.margin)+'px'});
 						showCaptions();
 						manageThumbButtons();
 						o.onSlideEnd.call(this);
