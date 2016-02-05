@@ -7,7 +7,7 @@
  * @copyright (c) admin@catchmyfame.com (www.catchmyfame.com)
  * @license CC Attribution-Share Alike 3.0 - http://creativecommons.org/licenses/by-sa/3.0/
  */
-(function($){
+$(function($){
 	$.fn.extend({ 
 		infiniteCarousel: function(options)
 		{
@@ -60,6 +60,7 @@
 				var imH=[];
 								
 				var u,elapsedTime=0;
+				//wait for all images to load
 				var canvasSupported = "HTMLCanvasElement" in window;
 				$('li',obj).each(function(index){ // populate arrays
 					captions.push( $('p',this).html() );
@@ -67,9 +68,9 @@
 					vidThumb.push( $(this).find('iframe').attr('longdesc') );
 					itemSources.push( $(this).find('img, iframe').attr('src') ); // finds images and youtube and vimeo iframe sources
 					
-					var img = $(this).find('img'); 
+					var img = $(this).find('img');
 					imW.push(img.width());
-					imH.push(img.height());
+					imH.push(img.height());					
 				});
 
 				// Check for improper values in inview and advance
@@ -431,4 +432,4 @@
  			});
 		}
 	});
-})(jQuery);
+})
