@@ -60,6 +60,7 @@ $(function($){
 				var imH=[];
 								
 				var u,elapsedTime=0;
+				//wait for all images to load
 				var canvasSupported = "HTMLCanvasElement" in window;
 				$('li',obj).each(function(index){ // populate arrays
 					captions.push( $('p',this).html() );
@@ -67,9 +68,13 @@ $(function($){
 					vidThumb.push( $(this).find('iframe').attr('longdesc') );
 					itemSources.push( $(this).find('img, iframe').attr('src') ); // finds images and youtube and vimeo iframe sources
 					
-					var img = $(this).find('img'); 
-					imW.push(img[0].clientWidth);
-					imH.push(img[0].clientHeight);
+					var im = new Image();
+					im.src = $(this).find('img').attr('src');
+					im.onload = function() {	
+						imW.push(this.width);
+						imH.push(this.height);
+					};
+					
 				});
 
 				// Check for improper values in inview and advance
@@ -431,4 +436,4 @@ $(function($){
  			});
 		}
 	});
-})(jQuery);
+})
