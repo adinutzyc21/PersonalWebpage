@@ -62,23 +62,33 @@ $(function($){
 				var u,elapsedTime=0;
 				//wait for all images to load
 				var canvasSupported = "HTMLCanvasElement" in window;
-				$('li',obj).each(function(index){				
-					var im = new Image();
-					im.onload = function() {	
-						//make sure the images have loaded
-					};					
-					im.src = $(this).find('img').attr('src');
-				});
+				
+				var img = new Image();
+				img.onload = function() {
+					console.log(this.width + 'x' + this.height);
+
+					//set this attribute to indicate that this image has been loaded already
+					$(this).attr( "data-loaded", "true" );
+
+					//check if all images have this attribute
+					if ( $( "img[data-loaded='true']" ).size() == $( "img" ).size() ) 
+					{
+					  //now iterate the images to load your array
+					  $('li',obj).each(function(index){ // populate arrays
+							img = $(this).find('img');
+							imW.push(img.width());
+							imH.push(img.height());	
+					  });
+					}
+				};
+				img.src = $(this).find('img').attr('src');
 				
 				$('li',obj).each(function(index){ // populate arrays
 					captions.push( $('p',this).html() );
 					links.push( $('a',this).attr('href') );
 					vidThumb.push( $(this).find('iframe').attr('longdesc') );
 					itemSources.push( $(this).find('img, iframe').attr('src') ); // finds images and youtube and vimeo iframe sources			
-
-					img = $(this).find('img');
-					imW.push(img.width());
-					imH.push(img.height());					
+				
 				});
 
 				// Check for improper values in inview and advance
