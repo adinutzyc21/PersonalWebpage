@@ -62,19 +62,23 @@ $(function($){
 				var u,elapsedTime=0;
 				//wait for all images to load
 				var canvasSupported = "HTMLCanvasElement" in window;
+				$('li',obj).each(function(index){				
+					var im = new Image();
+					im.onload = function() {	
+						//make sure the images have loaded
+					};					
+					im.src = $(this).find('img').attr('src');
+				});
+				
 				$('li',obj).each(function(index){ // populate arrays
 					captions.push( $('p',this).html() );
 					links.push( $('a',this).attr('href') );
 					vidThumb.push( $(this).find('iframe').attr('longdesc') );
-					itemSources.push( $(this).find('img, iframe').attr('src') ); // finds images and youtube and vimeo iframe sources
-					
-					var im = new Image();
-					im.src = $(this).find('img').attr('src');
-					im.onload = function() {	
-						imW.push(this.width);
-						imH.push(this.height);
-					};
-					
+					itemSources.push( $(this).find('img, iframe').attr('src') ); // finds images and youtube and vimeo iframe sources			
+
+					img = $(this).find('img');
+					imW.push(img.width());
+					imH.push(img.height());					
 				});
 
 				// Check for improper values in inview and advance
