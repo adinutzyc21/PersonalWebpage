@@ -60,7 +60,7 @@ $(function($){
 				var imH=[];
 								
 				var u,elapsedTime=0;
-				//wait for all images to load
+				//wait for all images to load 
 				var canvasSupported = "HTMLCanvasElement" in window;
 				$('li',obj).each(function(index){ // populate arrays
 					captions.push( $('p',this).html() );
@@ -68,19 +68,9 @@ $(function($){
 					vidThumb.push( $(this).find('iframe').attr('longdesc') );
 					itemSources.push( $(this).find('img, iframe').attr('src') ); // finds images and youtube and vimeo iframe sources
 					
-<<<<<<< HEAD
 					var img = $(this).find('img');
 					imW.push(img.width());
 					imH.push(img.height());					
-||||||| merged common ancestors
-					var img = $(this).find('img'); 
-					imW.push(img.width());
-					imH.push(img.height());
-=======
-					var img = $(this).find('img');
-					imW.push(img.clientWidth);
-					imH.push(img.clientHeight);					
->>>>>>> b53cc737b585c63b3968a29b66afa3ca8bb5e5b4
 				});
 
 				// Check for improper values in inview and advance
