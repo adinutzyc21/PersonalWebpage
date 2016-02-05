@@ -68,9 +68,19 @@ $(function($){
 					vidThumb.push( $(this).find('iframe').attr('longdesc') );
 					itemSources.push( $(this).find('img, iframe').attr('src') ); // finds images and youtube and vimeo iframe sources
 					
+<<<<<<< HEAD
 					var img = $(this).find('img');
 					imW.push(img.width());
 					imH.push(img.height());					
+||||||| merged common ancestors
+					var img = $(this).find('img'); 
+					imW.push(img.width());
+					imH.push(img.height());
+=======
+					var img = $(this).find('img');
+					imW.push(img.clientWidth);
+					imH.push(img.clientHeight);					
+>>>>>>> b53cc737b585c63b3968a29b66afa3ca8bb5e5b4
 				});
 
 				// Check for improper values in inview and advance
